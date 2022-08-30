@@ -41,11 +41,11 @@ if(isset($_POST['enregistrer_film']))
 
     if($query_execute)
     {
-        header('Location: http://localhost:8888/sql/index.php');
+        header('Location: index.php');
     }
     else
     {
-        header('Location: http://localhost:8888/sql/create.php');
+        header('Location: create.php');
     }
 }
 

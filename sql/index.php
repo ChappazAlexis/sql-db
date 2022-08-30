@@ -10,7 +10,7 @@
 
 
 <?php
-$conn = require_once 'connect.php';
+require_once 'connect.php';
 
 ?>
 
@@ -27,41 +27,49 @@ $conn = require_once 'connect.php';
             <th>Producteur</th>
             <th>note</th>
             <th>Pays d'origine</th>
-            <th>Résumé</th>
+            <th>Synopsis</th>
             <th>Genre</th>
             <th>Catégorie</th>
+            <th>Edit</th>
+            <th>Detail</th>
+            <th>Delete</th>
         </thead>
 
         <tbody>
             <?php
             $query = "SELECT * FROM film";
-            $statement = $conn->prepare($query);
-            $statement->execute();
+            $insert=$conn->prepare($query);
+            $insert ->execute();
+            $rows = $insert->fetchAll();
 
-            $statement->setFetchMode(PDO::FETCH_OBJ);
-            $result = $statement->fetchAll();
-            if ($result) {
-                foreach ($result as $row) {
+
+                if ($rows) {
+                foreach ($rows as $row) {
             ?>
                     <tr>
-                        <td><?= $row->id; ?></td>
-                        <td><?= $row->titre; ?></td>
-                        <td><?= $row->sortie; ?></td>
-                        <td><?= $row->duree; ?></td>
-                        <td><?= $row->realisateur; ?></td>
-                        <td><?= $row->producteur; ?></td>
-                        <td><?= $row->note; ?></td>
-                        <td><?= $row->pays_origines; ?></td>
-                        <td><?= $row->synopsis; ?></td>
-                        <td><?= $row->categorie; ?></td>
-                        <td><?= $row->genre; ?></td>
+                        <td><?= $row['id']; ?></td>
+                        <td><?= $row['titre']; ?></td>
+                        <td><?= $row['sortie']; ?></td>
+                        <td><?= $row['duree']; ?></td>
+                        <td><?= $row['realisateur']; ?></td>
+                        <td><?= $row['producteur']; ?></td>
+                        <td><?= $row['note']; ?></td>
+                        <td><?= $row['pays_origines']; ?></td>
+                        <td><?= $row['synopsis']; ?></td>
+                        <td><?= $row['categorie']; ?></td>
+                        <td><?= $row['genre']; ?></td>
+                        <td>
+                            <form action="delete.php" method="POST">
+                                <button type="submit" name="delete" value="<?$row['id']?>">DELETE</button>
+                            </form>
+                        </td>
                     </tr>
                 <?php
                 }
             } else {
                 ?>
                 <tr>
-                    <td colspan="5">Aucun film</td>
+                    <td>Aucun film</td>
                 </tr>
             <?php
             }
